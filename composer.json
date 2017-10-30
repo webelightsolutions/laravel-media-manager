@@ -1,0 +1,16 @@
+{
+    "name": "webelightdev/laravel-media-manager",
+    "description": "Configer media files from UI",
+    "type": "library",
+    "require": {
+        "intervention/image": "^2.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "vivek",
+            "email": "vivek.kachhadiya23@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
