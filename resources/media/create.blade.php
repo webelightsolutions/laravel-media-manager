@@ -4,15 +4,6 @@
         <form method="POST" action="/media/store" enctype="multipart/form-data" id="multiple_upload_form">
             <div class="panel-body">
                 <div class="item">
-                    <p>
-                        <button type="button" class="btn btn-primary" data-toggle="collapse" href="#collapseImage" aria-expanded="true" aria-controls="collapseImage">
-                        Image
-                      </button>
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseDocument" aria-expanded="false" aria-controls="collapseDocument">
-                            Document
-                        </button>
-                    </p>
-                    <div class="collapse" id="collapseImage">
                         <div class="form-group col-md-6">
                             <label class="color-black">Select Directory OR Create Directory</label>
                             <select class="form-control color-black" name="directory_lists">
@@ -27,6 +18,10 @@
                             <label class="btn btn-default btn-file">
                                 Upload Images
                                 <input type="file" style="display: none;" accept="image/*" name="photos[]" class="form-control"  multiple/>
+                            </label>
+                            <label class="btn btn-default btn-file">
+                                Upload Documents
+                                <input type="file" style="display: none;" accept=".txt, .pdf, .doc, .docx, .ppt, .xlsx" name="documents[]" class="form-control" multiple/>
                             </label>
                         </div>
                         <div class="form-group col-md-12">
@@ -86,27 +81,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="collapse" id="collapseDocument">
-                        <!-- <div class="form-group col-md-6">
-                            <label class="color-black">Select Directory OR Create Directory</label>
-                            <select class="form-control color-black" name="directory_lists">
-                               @foreach($directoryLists as $directoryList)
-                                   <option value="{{ $directoryList }}">{{ $directoryList }}</option>
-                               @endforeach
-                            </select>
-                            <label class="color-black">OR</label>
-                            <input type="text" name="create_directory" class="form-control">
-                        </div> -->
-                        <div class="form-group">
-                            <label class="btn btn-default btn-file">
-                                Upload Documents
-                                <input type="file" style="display: none;" accept=".txt, .pdf, .doc, .docx, .ppt, .xlsx" name="documents[]" class="form-control" multiple/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">
                     Save

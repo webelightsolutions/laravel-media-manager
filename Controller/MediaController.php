@@ -81,6 +81,7 @@ class MediaController extends Controller
                 }
                 $newImage->save();
                 Storage::disk('public')->put($directoryName.'/images/'."/$imageType/".$orignalImageName, $newImage);
+            }
             DB::beginTransaction();
             try{
                 MediaImage::create([
@@ -96,7 +97,6 @@ class MediaController extends Controller
             }
             DB::commit();
             return Response::json("Data Saved SuccessFully", 200);
-            }
         }
     }
 
