@@ -1,6 +1,6 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\Controller;
+namespace Webelightdev\LaravelMediaManager\src\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,21 +8,28 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use Webelightdev\LaravelMediaManager\Model\MediaImage;
-use Webelightdev\LaravelMediaManager\Model\MediaDocument;
+use Webelightdev\LaravelMediaManager\src\MediaImage;
+use Webelightdev\LaravelMediaManager\src\MediaDocument;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class MediaController extends Controller
 {
+    protected $mediaImage;
+    protected $mediaDocument;
+    public function __construct(MediaImage $mediaImage, MediaDocument $mediaDocument)
+    {
+        $this->mediaImage = $mediaImage;
+        $this->mediaDocument = $mediaDocument;
+    }
+
     public function create()
     {
         $directoryLists = Storage::disk('public')->directories();
-        return view('laravel-mediaManager::create', compact('directoryLists'));
+        return view('laravel-mediaManager::media', compact('directoryLists'));
     }
 
     public function store(Request $request)
     {
-       //dd($request->all());
         $directoryName = '';
         $imageTypes = ['original', 'medium', 'small','extra_small'];
         if($request->file('photos')){
@@ -84,7 +91,7 @@ class MediaController extends Controller
             }
             DB::beginTransaction();
             try{
-                MediaImage::create([
+                $this->mediaImage->create([
                     'name' => $orignalImageName,
                     'original_path' =>$original_path,
                     'medium_path' =>$medium_path,
@@ -115,7 +122,7 @@ class MediaController extends Controller
             }
             DB::beginTransaction();
             try{
-                MediaDocument::create([
+                $this->mediaDocument->create([
                     'name' => $originalDocumentName,
                     'path' =>$path,
                 ]);

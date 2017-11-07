@@ -32,7 +32,7 @@ class LaravelMediaManagerServiceProvider extends ServiceProvider
            return new LaravelMediaManagerClass();
        });
 
-       $this->app->make('Webelightdev\LaravelMediaManager\Controller\MediaController');
-       $this->loadViewsFrom(__DIR__.'/resources/media/', 'laravel-mediaManager');
+       $this->app->make('Webelightdev\LaravelMediaManager\src\Controllers\MediaController');
+       $this->loadViewsFrom(__DIR__.'/src/resources/views/', 'laravel-mediaManager');
     }
 }

@@ -1,3 +1,3 @@
 <?php
-Route::get('media', 'Webelightdev\LaravelMediaManager\Controller\MediaController@create');
-Route::post('media/store', 'Webelightdev\LaravelMediaManager\Controller\MediaController@store');
+Route::get('media', 'Webelightdev\LaravelMediaManager\src\Controllers\MediaController@create');
+Route::post('media/store', 'Webelightdev\LaravelMediaManager\src\Controllers\MediaController@store');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\Model;
+namespace Webelightdev\LaravelMediaManager\src;
 
 use App\BaseModel;
 
