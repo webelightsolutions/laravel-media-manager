@@ -10,4 +10,6 @@ return [
 	 * https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
 	 */
 	'allowed_mimes' => ['image', 'application'],
-]
+
+	'image_types' => ['original', 'medium', 'small','extra_small'],
+];

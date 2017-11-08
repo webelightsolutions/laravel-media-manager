@@ -5,6 +5,7 @@ namespace Webelightdev\LaravelMediaManager\src\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -14,24 +15,41 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class MediaController extends Controller
 {
+    protected $fileSystem;
+    protected $storageDisk;
     protected $mediaImage;
     protected $mediaDocument;
+    protected $allowed_mimes;
+    protected $image_types;
+
     public function __construct(MediaImage $mediaImage, MediaDocument $mediaDocument)
     {
         $this->mediaImage = $mediaImage;
         $this->mediaDocument = $mediaDocument;
+        $this->fileSystem      = config('mediaManager.storage_disk');
+        $this->storageDisk = app('filesystem')->disk($this->fileSystem);
+        $this->allowed_mimes = config('mediaManager.allowed_mimes');
+        $this->image_types = config('mediaManager.image_types');
     }
-
     public function create()
     {
-        $directoryLists = Storage::disk('public')->directories();
-        return view('laravel-mediaManager::media', compact('directoryLists'));
+        $directoryLists = $this->storageDisk->directories();
+        return view('MediaManager::media', compact('directoryLists'));
     }
-
+    public function new_folder(Request $request)
+    {
+        if($this->storageDisk->exists($request->folderName)){
+            return redirect('/media')->with('error', trans('MediaManager::messages.folder_exists_already'));
+        }else {
+            foreach ( $this->image_types as $key => $imageType) {
+                $this->storageDisk->makeDirectory($request->folderName.'/images/'."/$imageType/");
+            }
+            return redirect('/media')->with('success', trans('MediaManager::messages.create_new_folder'));
+        }
+    }
     public function store(Request $request)
     {
         $directoryName = '';
-        $imageTypes = ['original', 'medium', 'small','extra_small'];
         if($request->file('photos')){
             $originalImages = $request->file('photos');
             $imageVarients = $request->images;
@@ -41,8 +59,7 @@ class MediaController extends Controller
             if($request->create_directory){
                 $directoryName = $request->create_directory;
             } 
-            $this->createDirectories($directoryName, $imageTypes);
-            $this->imagesResize($imageVarients, $originalImages, $imageTypes, $directoryName);
+            $this->imagesResize($imageVarients, $originalImages, $this->image_types, $directoryName);
         } 
 
         if($request->file('documents')){
@@ -55,31 +72,20 @@ class MediaController extends Controller
             } else {
                 // Error
             }
-
-            Storage::disk('public')->makeDirectory($directoryName.'/documents/');
+            $this->storageDisk->makeDirectory($directoryName.'/documents/');
             $this->storeDocuments($originalDocuments, $directoryName);
            
         }
     }
 
-    public function createDirectories($directoryName, $imageTypes)
-    {
-        foreach ($imageTypes as $key => $imageType) {
-            Storage::disk('public')->makeDirectory($directoryName.'/images/'."/$imageType/");
-        }
-    }
 
     public function imagesResize($imageVarients, $originalImages, $imageTypes, $directoryName)
     {
         foreach ($originalImages as $originalImage) {
             $orignalImageName = $originalImage->getClientOriginalName();
-            $original_path = $directoryName.'/images/original/';
-            $medium_path = $directoryName.'/images/medium/';
-            $small_path = $directoryName.'/images/small/';
-            $extraSmall_path = $directoryName.'/images/extra_small/';
             $newImage = Image::make($originalImage);
             $newImage->backup();
-            foreach ($imageTypes as $key => $imageType) {
+            foreach ($this->image_types as $key => $imageType) {
                 $newImage->reset()->resize($imageVarients[$imageType]['img_width'], $imageVarients[$imageType]['img_height'], function ($constraint) {
                        $constraint->aspectRatio();
                     });
@@ -87,16 +93,16 @@ class MediaController extends Controller
                     $newImage->resizeCanvas($imageVarients[$imageType]['img_canvas_width'], $imageVarients[$imageType]['img_canvas_height'], 'center', false, $imageVarients[$imageType]['img_canvas_color']);
                 }
                 $newImage->save();
-                Storage::disk('public')->put($directoryName.'/images/'."/$imageType/".$orignalImageName, $newImage);
+                $this->storageDisk->put($directoryName.'/images/'."/$imageType/".$orignalImageName, $newImage);
             }
             DB::beginTransaction();
             try{
                 $this->mediaImage->create([
                     'name' => $orignalImageName,
-                    'original_path' =>$original_path,
-                    'medium_path' =>$medium_path,
-                    'small_path' =>$small_path,
-                    'extraSmall_path' =>$extraSmall_path,
+                    'original_path' =>$directoryName.'/images/original/',
+                    'medium_path' =>$directoryName.'/images/medium/',
+                    'small_path' =>$directoryName.'/images/small/',
+                    'extraSmall_path' =>$directoryName.'/images/extra_small/',
                 ]);
               } catch (\Illuminate\Database\QueryException $e) {
                 DB::rollback();
@@ -116,7 +122,7 @@ class MediaController extends Controller
            $allowedExts = array("txt","pdf","doc","docx","ppt", "xlsx");
            $path = $directoryName.'/documents/';
            if(in_array($documentType, $allowedExts)){
-               Storage::disk('public')->put($directoryName.'/documents/'.$originalDocumentName, File::get($originalDocument));
+               $this->storageDisk->put($directoryName.'/documents/'.$originalDocumentName, File::get($originalDocument));
             } else {
                 //Error
             }
