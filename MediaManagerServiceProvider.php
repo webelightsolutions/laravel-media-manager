@@ -13,7 +13,7 @@ class LaravelMediaManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/src/resources/leng/en', 'MediaManager');
+        $this->loadTranslationsFrom(__DIR__.'/lang/mediaManager/message', 'MediaManager');
 
         $this->publishes([__DIR__.'/src/resources/leng/en' => resource_path('lang/mediaManager/message')]);
         // Config

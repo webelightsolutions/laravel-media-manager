@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Exception;
 use Webelightdev\LaravelMediaManager\src\MediaImage;
 use Webelightdev\LaravelMediaManager\src\MediaDocument;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -21,6 +22,7 @@ class MediaController extends Controller
     protected $mediaDocument;
     protected $allowed_mimes;
     protected $image_types;
+    protected $allowed_extension;
 
     public function __construct(MediaImage $mediaImage, MediaDocument $mediaDocument)
     {
@@ -30,6 +32,7 @@ class MediaController extends Controller
         $this->storageDisk = app('filesystem')->disk($this->fileSystem);
         $this->allowed_mimes = config('mediaManager.allowed_mimes');
         $this->image_types = config('mediaManager.image_types');
+        $this->allowed_extension = config('mediaManager.allowed_extension');
     }
     public function create()
     {
@@ -44,33 +47,42 @@ class MediaController extends Controller
             foreach ( $this->image_types as $key => $imageType) {
                 $this->storageDisk->makeDirectory($request->folderName.'/images/'."/$imageType/");
             }
+            $this->storageDisk->makeDirectory($request->folderName.'/documents/');
             return redirect('/media')->with('success', trans('MediaManager::messages.create_new_folder'));
         }
     }
     public function store(Request $request)
     {
-        $directoryName = '';
-        if($request->file('photos')){
-            $originalImages = $request->file('photos');
-            $imageVarients = $request->images;
-            if($request->directory_lists){
-                $directoryName = $request->directory_lists;
-            } 
-            if($request->create_directory){
-                $directoryName = $request->create_directory;
-            } 
-            $this->imagesResize($imageVarients, $originalImages, $this->image_types, $directoryName);
-        } 
+        $upload_path = $request->upload_path;
+        $files       = $request->file('photos');
+        $imageVarients = $request->images;
+        if($files && $upload_path){
+            foreach ($files as $file){
+                try{
+                    //Check For mime and Extension
+                    $file_name = $file->getClientOriginalName();
+                    $file_type = $file->getMimeType();
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                    if (!(str_contains($file_type, $this->allowed_mimes) && str_contains($file_extension, $this->allowed_extension))) {
+                        throw new Exception(trans('MediaManager::messages.not_allowed_file_ext'));
+                    }
+                    $this->imagesResize($imageVarients, $file, $this->image_types, $upload_path);
+                } catch (Exception $e) {
+                    $result[] = [
+                        'success' => false,
+                        'message' => "\"$file_name\" " . $e->getMessage(),
+                    ]
+                }
+            }
+        } else {
+            dd('sdfsd');
+        }
 
         if($request->file('documents')){
             $originalDocuments = $request->file('documents');
 
             if($request->directory_lists){
                 $directoryName = $request->directory_lists;
-            } else if($request->create_directory){
-                $directoryName = $request->create_directory;
-            } else {
-                // Error
             }
             $this->storageDisk->makeDirectory($directoryName.'/documents/');
             $this->storeDocuments($originalDocuments, $directoryName);
@@ -79,7 +91,7 @@ class MediaController extends Controller
     }
 
 
-    public function imagesResize($imageVarients, $originalImages, $imageTypes, $directoryName)
+    public function imagesResize($imageVarients, $originalImages, $imageTypes, $upload_path)
     {
         foreach ($originalImages as $originalImage) {
             $orignalImageName = $originalImage->getClientOriginalName();
@@ -119,7 +131,7 @@ class MediaController extends Controller
            $originalDocumentName = $originalDocument->getClientOriginalName();
            $temp = explode(".", $originalDocumentName);
            $documentType = end($temp);
-           $allowedExts = array("txt","pdf","doc","docx","ppt", "xlsx");
+           $allowedExts = array();
            $path = $directoryName.'/documents/';
            if(in_array($documentType, $allowedExts)){
                $this->storageDisk->put($directoryName.'/documents/'.$originalDocumentName, File::get($originalDocument));
