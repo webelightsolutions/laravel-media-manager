@@ -17,19 +17,15 @@
                 <div class="form-group col-md-12">
                     <div class="form-group col-md-6">
                         <label class="color-black">Select Directory</label>
-                        <select class="form-control color-black" name="upload_path">
-                            @foreach($directoryLists as $directoryList)
-                            <option value="{{ $directoryList }}">{{ $directoryList }}</option>
+                        <select class="form-control color-black" name="directory">
+                            @foreach($directories as $directory)
+                            <option value="{{ $directory }}">{{ $directory }}</option>
                             @endforeach
                         </select>
                     </div>
                     <label class="btn btn-default btn-file">
-                        Upload Images
-                        <input type="file" style="display: none;" accept="image/*" name="photos[]" class="form-control" multiple/>
-                    </label>
-                    <label class="btn btn-default btn-file">
-                        Upload Documents
-                        <input type="file" style="display: none;" accept=".txt, .pdf, .doc, .docx, .ppt, .xlsx" name="documents[]" class="form-control" multiple/>
+                        Upload 
+                        <input type="file" style="display: none;" name="file" class="form-control" multiple/>
                     </label>
                     <div class="form-group col-md-12">
                         <div class="col-md-3">
