@@ -2,14 +2,15 @@
 
 namespace Webelightdev\LaravelMediaManager\src\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 use Webelightdev\LaravelMediaManager\src\Controllers\ModelDeterminer;
+use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\FileIsTooBig;
+use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\RequestDoesNotHaveFile;
 
 
 class MediaController extends Controller
@@ -36,23 +37,26 @@ class MediaController extends Controller
     public function makeDirectory(Request $request)
     {
         if ($this->storage->exists($request->folderName)) {
-            return redirect('media')->with('error', trans('MediaManager::messages.folder_exists_already'));
+            return redirect()->back()->with('error', trans('MediaManager::messages.folder_exists_already'));
         } else {
-            foreach ($this->image_types as $key => $imageType) {
-                $this->storage->makeDirectory($request->folderName.'/images/'."/$imageType/");
-            }
-            $this->storage->makeDirectory($request->folderName.'/documents/');
-            return redirect('media')->with('success', trans('MediaManager::messages.create_new_folder'));
+            $this->storage->makeDirectory($request->folderName);
+            return redirect()->back()->with('success', trans('MediaManager::messages.create_new_folder'));
         }
     }
+
     public function store(Request $request)
     {
-        $directory = $request->directory;
         $media = $request->file('file');
+        if (empty($media)) {
+            throw RequestDoesNotHaveFile::create();  
+        } 
+        if (filesize($media) > config('mediaManager.max_file_size')) {
+            throw FileIsTooBig::create(filesize($media));
+        }
         $mimeType = $media->getMimeType();
-        $imageVarients = $request->images;
         $mediaModelType = $this->modelDeterminer->getMediaType($mimeType)->getMediaClass();
         $mediaInstance = new $mediaModelType;
-        $mediaInstance->storeMedia($media, $directory, $this->storage);
+        $mediaInstance->storeMedia($request->all(), $this->storage);
+        return redirect()->back()->with('success', 'Media Store  SuccessFully.');
     }
 }

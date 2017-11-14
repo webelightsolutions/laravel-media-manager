@@ -2,6 +2,7 @@
 
 namespace Webelightdev\LaravelMediaManager\src\Controllers;
 
+use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
 class ModelDeterminer {
     /**
      * @var string
@@ -45,8 +46,7 @@ class ModelDeterminer {
                 return $this;
             }
         }
-
-        return null;
+       throw MimeTypeNotAllowed::create($mimetype, array_flatten($this->mediaTypes));
     }
 
     /**
