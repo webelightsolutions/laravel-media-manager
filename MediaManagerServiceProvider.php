@@ -19,8 +19,7 @@ class LaravelMediaManagerServiceProvider extends ServiceProvider
         // Config
         $this->publishes([__DIR__.'/config/mediaManager.php' => config_path('mediaManager.php')]);
         // Migration
-       $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
-
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
        include __DIR__.'/routes.php';
     }
 

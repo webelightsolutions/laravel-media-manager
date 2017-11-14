@@ -1,11 +1,23 @@
 <?php
 return [
 	/*
-	 * filesystem disk
-	 */
-	'storage' => 'public',
+		|--------------------------------------------------------------------------
+		| Filesystem Disk
+		|--------------------------------------------------------------------------
+		*/
+		'storage' => 'public',
+	/*
+		|--------------------------------------------------------------------------
+		| Max File Size
+		|--------------------------------------------------------------------------
+		|
+		| The maximum file size of an item in bytes.
+		| Adding a larger file will result in an exception.
+		|
+		*/
+		'max_file_size' => 1024 * 1024 * 10,
 
-	 /*
+	/*
 		|--------------------------------------------------------------------------
 		| Media Types
 		|--------------------------------------------------------------------------
@@ -17,7 +29,7 @@ return [
 		*/
 	    'media_types' => [
 	        'audio'    => [
-	            'audio/aac', 'audio/mp4', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/webm'
+	            'audio/aac', 'audio/mp3', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/webm'
 	        ],
 	        'document' => [
 	            'text/plain', 'application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint',
@@ -33,18 +45,18 @@ return [
 	        ]
 	    ],
 
-	    /*
-	    	|--------------------------------------------------------------------------
-	    	| Model Types
-	    	|--------------------------------------------------------------------------
-	    	|
-	    	| You may define the media models which correspond to the media types here.
-	    	|
-	    	*/
-	        'media_classes' => [
-	            'audio'    => Webelightdev\LaravelMediaManager\src\Classes\Audio::class,
-	            'document' => Webelightdev\LaravelMediaManager\src\Classes\Document::class,
-	            'image'    => Webelightdev\LaravelMediaManager\src\Classes\Image::class,
-	            'video'    => Webelightdev\LaravelMediaManager\src\Classes\Video::class
-	        ]
+    /*
+    	|--------------------------------------------------------------------------
+    	| Media Class Types
+    	|--------------------------------------------------------------------------
+    	|
+    	| You may define the media models which correspond to the media types here.
+    	|
+    	*/
+        'media_classes' => [
+            'audio'    => Webelightdev\LaravelMediaManager\src\Classes\Audio::class,
+            'document' => Webelightdev\LaravelMediaManager\src\Classes\Document::class,
+            'image'    => Webelightdev\LaravelMediaManager\src\Classes\Image::class,
+            'video'    => Webelightdev\LaravelMediaManager\src\Classes\Video::class
+        ]
 ];
