@@ -9,38 +9,33 @@ use  Webelightdev\LaravelMediaManager\src\MediaImage;
 use Illuminate\Support\Facades\Response;
 
 class Image {
-
-	public function storeMedia($imageVarients, $originalImage, $upload_path ,$storageDisk)
+	public function storeMedia($media, $storage)
 	{
-	        $orignalImageName = $originalImage->getClientOriginalName();
-	        $imageTypes = ['original', 'medium', 'small','extra_small'];
-	        $newImage = Images::make($originalImage);
-	        $newImage->backup();
-	        foreach ($imageTypes as $key => $imageType) {
-	            $newImage->reset()->resize($imageVarients[$imageType]['img_width'], $imageVarients[$imageType]['img_height'], function ($constraint) {
-	                   $constraint->aspectRatio();
-	                });
-	            if(array_has($imageVarients[$imageType], 'include_canvas') && $imageVarients[$imageType]['include_canvas'] == 1){
-	                $newImage->resizeCanvas($imageVarients[$imageType]['img_canvas_width'], $imageVarients[$imageType]['img_canvas_height'], 'center', false, $imageVarients[$imageType]['img_canvas_color']);
-	            }
-	            $newImage->save();
-	            $storageDisk->put($upload_path.'/images/'."/$imageType/".$orignalImageName, $newImage);
-	        }
-	        DB::beginTransaction();
-	        try{
-	            MediaImage::create([
-	                'name' => $orignalImageName,
-	                'original_path' =>$upload_path.'/images/original/',
-	                'medium_path' =>$upload_path.'/images/medium/',
-	                'small_path' =>$upload_path.'/images/small/',
-	                'extraSmall_path' =>$upload_path.'/images/extra_small/',
-	            ]);
-	          } catch (\Illuminate\Database\QueryException $e) {
-	            DB::rollback();
-	            return Response::json($e->getMessage() , 422);
-	        }
-	        DB::commit();
-	        return Response::json("Data Saved SuccessFully", 200);
-	   
+        $mediaName = $media['file']->getClientOriginalName();
+        $path = $media['directory'].'/images/';
+        $newImage = Images::make($media['file']);
+        $newImage->backup();
+        //$storage->makeDirectory($path);
+        $newImage->reset()->resize($media['imageVarients']['img_width'], $media['imageVarients']['img_height'], function ($constraint) {
+                   $constraint->aspectRatio();
+        });
+        if(array_has($media['imageVarients'], 'include_canvas') && $media['imageVarients']['include_canvas'] == 1){
+            $newImage->resizeCanvas($media['imageVarients']['img_canvas_width'], $media['imageVarients']['img_canvas_height'], 'center', false, $media['imageVarients']['img_canvas_color']);
+        }
+        $newImage->save();
+        $storage->put($path.$mediaName, $newImage);
+        
+        DB::beginTransaction();
+        try{
+            MediaImage::create([
+                'name' => $mediaName,
+                'original_path' =>$path,
+            ]);
+          } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()]);
+        }
+        DB::commit();
+       return response()->json(['message' => 'Image stored successfully.']);
 	}
 }
