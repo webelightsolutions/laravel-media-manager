@@ -2,7 +2,6 @@
 
 namespace Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
 
-use Webelightdev\LaravelMediaManager\src\Helpers\File;
 use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
 
 class MimeTypeNotAllowed extends FileCannotBeAdded
