@@ -7,15 +7,15 @@ use Illuminate\Support\ServiceProvider;
 class LaravelMediaManagerServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application services.
+     * Bootstrap the application services.    
      *
      * @return void
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/lang/mediaManager/message', 'MediaManager');
+        $this->loadTranslationsFrom(__DIR__.'/src/resources/lang/en/mediaManager/message', 'MediaManager');
 
-        $this->publishes([__DIR__.'/src/resources/leng/en' => resource_path('lang/mediaManager/message')]);
+        $this->publishes([__DIR__.'/src/resources/leng/en' => resource_path('lang/en/mediaManager/messages')]);
         // Config
         $this->publishes([__DIR__.'/config/mediaManager.php' => config_path('mediaManager.php')]);
         // Migration

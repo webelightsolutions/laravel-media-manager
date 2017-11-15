@@ -2,20 +2,20 @@
 
 namespace Webelightdev\LaravelMediaManager\src\Classes;
 
-use Intervention\Image\ImageManagerStatic as Images;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use  Webelightdev\LaravelMediaManager\src\MediaImage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Intervention\Image\ImageManagerStatic as Images;
+use Webelightdev\LaravelMediaManager\src\Helpers\HelperFile;
 
 class Image {
 	public function storeMedia($media, $storage)
 	{
-        $mediaName = $media['file']->getClientOriginalName();
+        $mediaName = HelperFile::getCurrentTimeStemp().'_'.$media['file']->getClientOriginalName();
+        $mediaType = $media['file']->getMimeType();
         $path = $media['directory'].'/images/';
         $newImage = Images::make($media['file']);
         $newImage->backup();
-        //$storage->makeDirectory($path);
         $newImage->reset()->resize($media['imageVarients']['img_width'], $media['imageVarients']['img_height'], function ($constraint) {
                    $constraint->aspectRatio();
         });
@@ -24,18 +24,6 @@ class Image {
         }
         $newImage->save();
         $storage->put($path.$mediaName, $newImage);
-        
-        DB::beginTransaction();
-        try{
-            MediaImage::create([
-                'name' => $mediaName,
-                'original_path' =>$path,
-            ]);
-          } catch (\Illuminate\Database\QueryException $e) {
-            DB::rollback();
-            return response()->json(['message' => $e->getMessage()]);
-        }
-        DB::commit();
-       return response()->json(['message' => 'Image stored successfully.']);
+        return $mediaData = array('media_name' => $mediaName, 'mime_type'=> $mediaType, 'path'=> $path);
 	}
 }
