@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Contracts\Translation\Loader;
 use Webelightdev\LaravelMediaManager\src\Media;
 use Webelightdev\LaravelMediaManager\src\Controllers\ModelDeterminer;
 use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\FileIsTooBig;
