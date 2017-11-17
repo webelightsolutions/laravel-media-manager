@@ -4,7 +4,7 @@ namespace Webelightdev\LaravelMediaManager;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelMediaManagerServiceProvider extends ServiceProvider
+class MediaManagerServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.    
@@ -31,7 +31,7 @@ class LaravelMediaManagerServiceProvider extends ServiceProvider
     public function register()
     {
        $this->app->bind('laravel-mediaManager', function () {
-           return new LaravelMediaManagerClass();
+           return new MediaManagerClass();
        });
 
        $this->app->make('Webelightdev\LaravelMediaManager\src\Controllers\MediaController');
