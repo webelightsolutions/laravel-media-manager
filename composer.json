@@ -15,6 +15,7 @@
     "autoload": {
          "psr-4": {
              "Webelightdev\\LaravelMediaManager\\": "packages/Webelightdev/laravel-mediaManager"
-         },
+         }
+    },
     "minimum-stability": "dev"
 }
