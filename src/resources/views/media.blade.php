@@ -58,7 +58,7 @@
                                     <input type="checkbox" name="imageVarients[include_canvas]" value="1" /> Include Canvas?
                                 </label>
                             </div>
-                            <div id="collapsediv1" class="collapse div1">
+                            <div id="collapsediv1">
                                 <div class="form-group">
                                     <label for="canvas_width" class="col-sm-8 control-label">Canvas Width</label>
                                     <div class="col-md-10">
