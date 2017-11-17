@@ -3,7 +3,7 @@
     "description": "Configer media files from UI",
     "type": "library",
     "require": {
-        "intervention/image": "^2.4",
+        "intervention/image": "^2.4"
     },
     "license": "MIT",
     "authors": [

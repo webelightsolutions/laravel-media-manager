@@ -11,6 +11,10 @@ class ComposerStaticInit22ffe15828887207e12b2b4801afa183
     );
 
     public static $prefixLengthsPsr4 = array (
+        'W' => 
+        array (
+            'Webelightdev\\LaravelMediaManager\\' => 33,
+        ),
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
@@ -26,6 +30,10 @@ class ComposerStaticInit22ffe15828887207e12b2b4801afa183
     );
 
     public static $prefixDirsPsr4 = array (
+        'Webelightdev\\LaravelMediaManager\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/packages/Webelightdev/laravel-mediaManager',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
