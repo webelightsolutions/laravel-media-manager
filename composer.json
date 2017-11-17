@@ -3,7 +3,7 @@
     "description": "Configer media files from UI",
     "type": "library",
     "require": {
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
     },
     "license": "MIT",
     "authors": [
@@ -12,5 +12,9 @@
             "email": "vivek.kachhadiya23@gmail.com"
         }
     ],
+    "autoload": {
+         "psr-4": {
+             "Webelightdev\\LaravelMediaManager\\": "packages/Webelightdev/laravel-mediaManager"
+         },
     "minimum-stability": "dev"
 }
