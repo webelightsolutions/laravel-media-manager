@@ -17,7 +17,7 @@ class MediaManagerServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__.'/resources/leng/en' => resource_path('lang/en/mediaManager/messages')]);
         // Config
-        $this->publishes([__DIR__.'/config/mediaManager.php' => config_path('mediaManager.php')]);
+        $this->publishes([__DIR__.'/../config/mediaManager.php' => config_path('mediaManager.php')]);
         // Migration
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
        include __DIR__.'/Routes/routes.php';
