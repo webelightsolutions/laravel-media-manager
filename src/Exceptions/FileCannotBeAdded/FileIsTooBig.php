@@ -1,9 +1,9 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+namespace Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
-use Webelightdev\LaravelMediaManager\src\Helpers\HelperFile;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+use Webelightdev\LaravelMediaManager\Helpers\HelperFile;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
 class FileIsTooBig extends FileCannotBeAdded
 {

@@ -42,11 +42,29 @@
                     <?php $counter = 1; ?> @foreach ($medias as $media)
                     <tr class="table-text text-center">
                         <td>{{ $counter++ }}</td>
+                        @if($media->type == 'video')
+                        <td class="table-text text-center">
+                            <div>
+                                <video width="150" height="150" autoplay controls>
+                                    <source src="{{ asset( 'storage/'.$media->path.$media->media_name) }}" alt="{{ $media->media_name }}">
+                                </video>
+                            </div>
+                        </td>
+                        @elseif($media->type == 'audio')
+                        <td class="table-text text-center">
+                            <div>
+                                <audio controls loop>
+                                    <source src="{{ asset( 'storage/'.$media->path.$media->media_name) }}" alt="{{ $media->media_name }}">
+                                </audio>
+                            </div>
+                        </td>
+                        @else
                         <td class="table-text text-center">
                             <div>
                                 <img src="{{ asset( 'storage/'.$media->path.$media->media_name) }}" width=100 height=100 alt="{{ $media->media_name }}">
                             </div>
                         </td>
+                        @endif
                         <td class="table-text text-center">
                             <div>{{ $media->mime_type }}</div>
                         </td>

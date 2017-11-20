@@ -13,14 +13,14 @@ class MediaManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/src/resources/lang/en/mediaManager/message', 'MediaManager');
+        $this->loadTranslationsFrom(__DIR__.'/resources/lang/en/mediaManager/message', 'MediaManager');
 
-        $this->publishes([__DIR__.'/src/resources/leng/en' => resource_path('lang/en/mediaManager/messages')]);
+        $this->publishes([__DIR__.'/resources/leng/en' => resource_path('lang/en/mediaManager/messages')]);
         // Config
         $this->publishes([__DIR__.'/config/mediaManager.php' => config_path('mediaManager.php')]);
         // Migration
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-       include __DIR__.'/routes.php';
+       include __DIR__.'/Routes/routes.php';
     }
 
     /**
@@ -34,7 +34,7 @@ class MediaManagerServiceProvider extends ServiceProvider
            return new MediaManagerClass();
        });
 
-       $this->app->make('Webelightdev\LaravelMediaManager\src\Controllers\MediaController');
-       $this->loadViewsFrom(__DIR__.'/src/resources/views/', 'MediaManager');
+       $this->app->make('Webelightdev\LaravelMediaManager\Controllers\MediaController');
+       $this->loadViewsFrom(__DIR__.'/resources/views/', 'MediaManager');
     }
 }

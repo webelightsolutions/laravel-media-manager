@@ -1,7 +1,7 @@
 <?php
-namespace Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+namespace Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
-use  Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+use  Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 class RequestDoesNotHaveFile extends FileCannotBeAdded
 {
     public static function create()

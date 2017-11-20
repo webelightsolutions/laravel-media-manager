@@ -1,6 +1,6 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Helpers;
+namespace Webelightdev\LaravelMediaManager\Helpers;
 
 use Finfo;
 use Imagick;

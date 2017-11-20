@@ -1,9 +1,9 @@
 <?php
 
-namespace  Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+namespace  Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
 use Exception;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
 class MediaCannotBeDeleted extends Exception
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+namespace Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded;
 
 class FileDoesNotExist extends FileCannotBeAdded
 {

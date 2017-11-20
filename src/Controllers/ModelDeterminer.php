@@ -1,8 +1,8 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Controllers;
+namespace Webelightdev\LaravelMediaManager\Controllers;
 
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
 class ModelDeterminer {
     /**
      * @var string

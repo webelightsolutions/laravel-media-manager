@@ -54,9 +54,9 @@ return [
     	|
     	*/
         'media_classes' => [
-            'audio'    => Webelightdev\LaravelMediaManager\src\Classes\Audio::class,
-            'document' => Webelightdev\LaravelMediaManager\src\Classes\Document::class,
-            'image'    => Webelightdev\LaravelMediaManager\src\Classes\Image::class,
-            'video'    => Webelightdev\LaravelMediaManager\src\Classes\Video::class
+            'audio'    => Webelightdev\LaravelMediaManager\Classes\Audio::class,
+            'document' => Webelightdev\LaravelMediaManager\Classes\Document::class,
+            'image'    => Webelightdev\LaravelMediaManager\Classes\Image::class,
+            'video'    => Webelightdev\LaravelMediaManager\Classes\Video::class
         ]
 ];

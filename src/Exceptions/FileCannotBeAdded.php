@@ -1,6 +1,6 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Exceptions;
+namespace Webelightdev\LaravelMediaManager\Exceptions;
 
 use Exception;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Classes;
+namespace Webelightdev\LaravelMediaManager\Classes;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\ImageManagerStatic as Images;
-use Webelightdev\LaravelMediaManager\src\Helpers\HelperFile;
+use Webelightdev\LaravelMediaManager\Helpers\HelperFile;
 
 class Image {
 	public function storeMedia($media, $storage)

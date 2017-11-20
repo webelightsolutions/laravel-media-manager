@@ -1,6 +1,6 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Controllers;
+namespace Webelightdev\LaravelMediaManager\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,12 +9,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Contracts\Translation\Loader;
-use Webelightdev\LaravelMediaManager\src\Media;
-use Webelightdev\LaravelMediaManager\src\Controllers\ModelDeterminer;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\FileIsTooBig;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\FileDoesNotExist;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\MediaCannotBeDeleted;
-use Webelightdev\LaravelMediaManager\src\Exceptions\FileCannotBeAdded\RequestDoesNotHaveFile;
+use Webelightdev\LaravelMediaManager\Media;
+use Webelightdev\LaravelMediaManager\Controllers\ModelDeterminer;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileIsTooBig;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileDoesNotExist;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\MediaCannotBeDeleted;
+use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\RequestDoesNotHaveFile;
 
 
 class MediaController extends Controller
@@ -51,6 +51,9 @@ class MediaController extends Controller
     public function getAllMedia()
     {
         $medias =  $this->media->all();
+        foreach ($medias as $media) {
+           $media['type'] = explode("/", $media->mime_type)[0];
+        }
         return view('MediaManager::index', compact('medias'));
     }
      public function getMediaById($id)

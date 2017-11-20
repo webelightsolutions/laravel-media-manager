@@ -1,12 +1,12 @@
 <?php
 
-namespace Webelightdev\LaravelMediaManager\src\Classes;
+namespace Webelightdev\LaravelMediaManager\Classes;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
-use Webelightdev\LaravelMediaManager\src\Helpers\HelperFile;
+use Webelightdev\LaravelMediaManager\Helpers\HelperFile;
 
 class Document {
     public function storeMedia($media, $storage)
