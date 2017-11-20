@@ -32,7 +32,7 @@ class ComposerStaticInit22ffe15828887207e12b2b4801afa183
     public static $prefixDirsPsr4 = array (
         'Webelightdev\\LaravelMediaManager\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/packages/Webelightdev/laravel-mediaManager',
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (
