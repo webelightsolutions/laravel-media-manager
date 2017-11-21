@@ -1,23 +1,31 @@
 # laravel-media-manager
 Media Manager using Laravel
 
-## Following are the step to configure Media Manager
+## Following are the step to configure Image Slider
 
 
-#### Step 1:copy vendor using composer
+### Step 1:Laravel media manager plugin requires the following components to work correctly
+    
+    Intervention Image
+    
 
+#### Step 2:copy vendor using composer
+    
     composer require webelightdev/laravel-media-manager dev-master
     
-    or
+    
+    Or, you may manually update require block and run `composer update`
     
     "require": {
        
         "webelightdev/laravel-media-manager": "dev-master"
     }
-    composer update
+    
+    'composer update' will be required.
 
-#### step 2: Copy providers to config/app.php
+#### step 3: Once Laravel Slider is installed, You need to register the Service Provider in `config/app.php` Add following in `providers` list
 
+   
     'providers' => [
      // ...
         Webelightdev\LaravelSlider\MediaManagerServiceProvider::class,
@@ -25,20 +33,23 @@ Media Manager using Laravel
 
     ]
 
-#### step 3: Run  
-	php artisan vendor:publish
+#### step 4: To publish the Config, Migration, Service Provider and Facades Run
 
+    php artisan vendor:publish
 
-#### step 4: Run  
-	php artisan migrate
+#### step 5: Finally, run migration to generate table Run
+ 
+    php artisan migrate
+    
+#### step 6: This packager Required Auth login if you don't have Auth login Run
 
+    php artisan make:auth
+    php artisan migrate
 
-#### you can view laravel slider with following link:
-www.yourdomain.com/slider 
+#### you can view laravel media manager by writing:
+www.yourdomain.com/media 
 or 
-localhost/yourapp/slider
-
-#### Demo
+localhost/yourapp/media
 
 
 
