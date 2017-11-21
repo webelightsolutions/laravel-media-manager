@@ -28,7 +28,7 @@ Media Manager using Laravel
    
     'providers' => [
      // ...
-        Webelightdev\LaravelSlider\MediaManagerServiceProvider::class,
+        Webelightdev\LaravelMediaManager\MediaManagerServiceProvider::class,
      // ...
 
     ]

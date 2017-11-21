@@ -42,10 +42,10 @@ class MediaController extends Controller
     public function makeDirectory(Request $request)
     {
         if ($this->storage->exists($request->folderName)) {
-            return redirect()->back()->with('error', trans('MediaManager::messages.folder_exists_already'));
+            return redirect()->back()->with('error', 'sdfdsfsdf');
         } else {
             $this->storage->makeDirectory($request->folderName);
-            return redirect()->back()->with('success', trans('MediaManager::messages.create_new_folder'));
+            return redirect('media/create')->with('success', 'dsfsfsafsaf');
         }
     }
     public function getAllMedia()

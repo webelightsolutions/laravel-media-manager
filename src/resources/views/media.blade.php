@@ -4,12 +4,12 @@
         <div class="panel-body">
             @if (session('success'))
             <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <strong>Success</strong> {{ session('success') }}
             </div>
             @elseif (session('error'))
             <div class="alert alert-danger">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <strong>Error!</strong> {{ session('error') }}
             </div>
             @endif
@@ -47,29 +47,31 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="checkbox" style="margin-top: 30px;">
-                            <label data-toggle='collapse' data-target='#collapsediv1'>
-                                <input type="checkbox" name="imageVarients[resize_image]" value="1" /> Resize Image ?
+                            <label data-toggle='collapse' data-target='#collapsediv2'>
+                                <input type="checkbox" name="imageVarients[resize_image]" value="1" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2" /> Resize Image ?
                             </label>
                         </div>
-                        <div class="form-group col-md-5">
-                            <div class="form-group">
-                                <label>Image Width</label>
-                                <input type="text" class="form-control" name="imageVarients[img_width]" value="500">
-                            </div>
-                        </div>
-                        <div class="form-group col-md-5">
-                            <div class="form-group">
-                                <label>Image Height</label>
-                                <div>
-                                    <input type="text" class="form-control" name="imageVarients[img_height]" value="500">
+                        <div class="collapse" id="collapseExample2">
+                            <div class="form-group col-md-5">
+                                <div class="form-group">
+                                    <label>Image Width</label>
+                                    <input type="text" class="form-control" name="imageVarients[img_width]" value="500">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="checkbox" style="margin-top: 30px;">
-                                <label data-toggle='collapse' data-target='#collapsediv1'>
-                                    <input type="checkbox" name="imageVarients[include_canvas]" value="1" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" /> Include Canvas?
-                                </label>
+                            <div class="form-group col-md-5">
+                                <div class="form-group">
+                                    <label>Image Height</label>
+                                    <div>
+                                        <input type="text" class="form-control" name="imageVarients[img_height]" value="500">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="checkbox" style="margin-top: 30px;">
+                                    <label data-toggle='collapse' data-target='#collapsediv1'>
+                                        <input type="checkbox" name="imageVarients[include_canvas]" value="1" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" /> Include Canvas?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="collapse" id="collapseExample">
