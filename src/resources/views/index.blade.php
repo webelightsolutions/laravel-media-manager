@@ -6,7 +6,7 @@
             <div class="col-md-8 text-right">
                 <a href='{{ url("media/create") }}' class="btn btn-default btn-sm">+ Add New</a>
             </div>
-            <form method="GET" action="#" class="navbar-form navbar-left">
+            <form method="GET" action="/media/search" class="navbar-form navbar-left">
                 <div class="input-group">
                     <input type="text" value="" name="search" id="searchs" placeholder="Search..." class="form-control" data-searchs/>
                     <span class="input-group-btn">
@@ -72,10 +72,10 @@
                             <div>{{ $media->path }}</div>
                         </td>
                         <td class="td-actions text-center">
-                            <button class="btn btn-info btn-sm"><i class="fa fa-trash-o" aria-hidden="true"><a href=" {{'storage/'.$media->path.$media->media_name }}" download>Download</a></i></button>
-                            <form method="POST" action="/media/{{$media->id }}" onsubmit="return getConfirmation()">
+                            <button class="btn btn-default btn-sm"><a href=" {{'storage/'.$media->path.$media->media_name }}" download>Download</a></button>
+                            <form method="POST" action="/media/{{$media->id }}" onsubmit="return getConfirmation()" style="display: inline-block;">
                                 {{ csrf_field() }} {{ method_field('DELETE') }}
-                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true">DELETE</i></button>
+                                <button class="btn btn-danger btn-sm">DELETE</button>
                             </form>
                             <script type="text/javascript">
                             function getConfirmation() {
