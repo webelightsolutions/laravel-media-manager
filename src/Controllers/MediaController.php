@@ -56,13 +56,17 @@ class MediaController extends Controller
         }
         return view('MediaManager::index', compact('medias'));
     }
-     public function getMediaById($id)
+     public function getMediaBySearch(Request $request)
     {
-        $media = $this->media->find($id);
-        if (!$media) {
-            throw FileDoesNotExist::create();
+       $keyword = $request->search;
+       $medias =  $this->media->Where('mime_type', 'LIKE', "%$keyword%")
+                               ->orWhere('path', 'LIKE', "%$keyword%")
+                               ->orWhere('media_name', 'LIKE', "%$keyword%")
+                               ->get()->all();
+        foreach ($medias as $media) {
+           $media['type'] = explode("/", $media->mime_type)[0];
         }
-        $media->get();
+        return view('MediaManager::index', compact('medias'));
     }
 
     public function store(Request $request)
