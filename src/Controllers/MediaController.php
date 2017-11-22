@@ -4,12 +4,13 @@ namespace Webelightdev\LaravelMediaManager\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Contracts\Translation\Loader;
 use Webelightdev\LaravelMediaManager\Media;
+use Illuminate\Contracts\Translation\Loader;
+use Webelightdev\LaravelMediaManager\ExternalMedia;
 use Webelightdev\LaravelMediaManager\Controllers\ModelDeterminer;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileIsTooBig;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileDoesNotExist;
@@ -19,20 +20,22 @@ use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\RequestDoesNot
 
 class MediaController extends Controller
 {
-    protected $fileSystem;
     protected $storage;
-    protected $media_types;
     protected $model_type;
+    protected $fileSystem;
+    protected $media_types;
+    protected $externalMedia;
     protected $modelDeterminer;
 
-    public function __construct(ModelDeterminer $modelDeterminer, Media $media)
+    public function __construct(ModelDeterminer $modelDeterminer, Media $media, ExternalMedia $externalMedia)
     {
-        $this->media = $media;
+        $this->media           = $media;
+        $this->externalMedia   = $externalMedia;
         $this->modelDeterminer = $modelDeterminer;
-        $this->mediaTypes = config('mediaManager.media_types');
         $this->fileSystem      = config('mediaManager.storage');
-        $this->mediaClasses = config('mediaManager.media_classes');
-        $this->storage = app('filesystem')->disk($this->fileSystem);
+        $this->mediaTypes      = config('mediaManager.media_types');
+        $this->mediaClasses    = config('mediaManager.media_classes');
+        $this->storage         = app('filesystem')->disk($this->fileSystem);
     }
     public function create()
     {
@@ -42,10 +45,10 @@ class MediaController extends Controller
     public function makeDirectory(Request $request)
     {
         if ($this->storage->exists($request->folderName)) {
-            return redirect()->back()->with('error', 'sdfdsfsdf');
+            return redirect()->back()->with('error', 'sdfdsfsdf')->withInput();
         } else {
             $this->storage->makeDirectory($request->folderName);
-            return redirect('media/create')->with('success', 'dsfsfsafsaf');
+            return redirect('media/create')->with('success', 'dsfsfsafsaf')->withInput();
         }
     }
     public function getAllMedia()
@@ -88,13 +91,12 @@ class MediaController extends Controller
                 $this->media->create($mediaData);
                } catch (\Illuminate\Database\QueryException $e) {
                  DB::rollback();
-                 return redirect('media')->with('error', $e->getMessage());
+                 return redirect('media')->with('error', $e->getMessage())->withInput();
              }
              DB::commit();
-             return redirect('media')->with('success','Media stored successfully.');
+             return redirect('media')->with('success','Media stored successfully.')->withInput();
         }
     }
-
     public function destroy($id)
     {
         $media = $this->media->find($id);
@@ -104,5 +106,31 @@ class MediaController extends Controller
         $media->delete();
         unlink('storage/'.$media->path.$media->media_name);
         return redirect()->back();
+    }
+    public function getExternalMedia($mediaId, $externalId)    
+    {        
+        $sliders = $this->externalMedia->where('media_id', $mediaId)->where('external_id', $externalId)->get();        
+        return view('MediaManager::index', compact('medias'));    
+    }
+    public function get($attribute, $value, $all = 'true')    
+    {        
+        if ($all == 'true') {            
+            $medias = $this->media->where($attribute, $value)->where('is_active', 1)->get();        
+        } else {            
+            $medias = $this->media->where($attribute, $value)->where('is_active', 1)->first();        
+        }        
+        return view('MediaManager::index', compact('medias'));   
+    }
+    public function externalMediaStore(Request $request)
+    {
+        DB::beginTransaction();
+        try{
+          $this->externalMedia->create($request->all());
+          } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollback();
+            return redirect('media')->with('error', $e->getMessage())->withInput();
+        }
+        DB::commit();
+        return redirect('media')->with('success','Media stored successfully.')->withInput();
     }
 }
