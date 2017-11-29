@@ -27,11 +27,11 @@ class MediaController extends Controller
     protected $mediaEntity;
     protected $modelDeterminer;
 
-    public function __construct(ModelDeterminer $modelDeterminer, Media $media, MediaEntity $mediaEntity)
+    public function __construct()
     {
-        $this->media           = $media;
-        $this->mediaEntity     = $mediaEntity;
-        $this->modelDeterminer = $modelDeterminer;
+        $this->media           = new Media();
+        $this->mediaEntity     = new MediaEntity();
+        $this->modelDeterminer = new ModelDeterminer();
         $this->fileSystem      = config('mediaManager.storage');
         $this->mediaTypes      = config('mediaManager.media_types');
         $this->mediaClasses    = config('mediaManager.media_classes');
@@ -88,14 +88,21 @@ class MediaController extends Controller
         if(!empty($mediaData)){
              DB::beginTransaction();
              try{
-                $this->media->create($mediaData);
+                 $mediaResonse = $this->media->create($mediaData);
                } catch (\Illuminate\Database\QueryException $e) {
                  DB::rollback();
                  return redirect('media')->with('error', $e->getMessage())->withInput();
              }
              DB::commit();
-             return redirect('media')->with('success','Media stored successfully.')->withInput();
-        }
+             if($request->returnType == 'json'){
+
+                            return response()->json($mediaResonse);
+
+                        } else {
+
+                            return redirect('media')->with('success', 'Media stored successfully.')->withInput();
+                        }
+            
     }
     public function destroy($id)
     {

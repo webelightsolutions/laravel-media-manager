@@ -15,7 +15,7 @@ class Image {
         $mediaType = $media['file']->getMimeType();
         $path = $media['directory'].'/images/';
         $newImage = Images::make($media['file']);
-        if(array_has($media['imageVarients'], 'resize_image')) {
+        if(array_has($media, 'imageVarients') && array_has($media['imageVarients'], 'resize_image')) {
             $newImage->backup();
             $newImage->reset()->resize($media['imageVarients']['img_width'], $media['imageVarients']['img_height'], function ($constraint) {
                        $constraint->aspectRatio();
