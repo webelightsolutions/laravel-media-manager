@@ -30,7 +30,7 @@ class MediaManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-       $this->app->bind('MediaManager', function () {
+       $this->app->bind('media', function () {
            return new MediaController();
        });
 

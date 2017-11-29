@@ -6,6 +6,6 @@ class Media extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'MediaManager';
+        return 'media';
     }
 }
