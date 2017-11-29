@@ -30,8 +30,8 @@ class MediaManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-       $this->app->bind('laravel-mediaManager', function () {
-           return new MediaManagerClass();
+       $this->app->bind('MediaManager', function () {
+           return new MediaController();
        });
 
        $this->app->make('Webelightdev\LaravelMediaManager\Controllers\MediaController');

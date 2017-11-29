@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Webelightdev\LaravelMediaManager\Media;
 use Illuminate\Contracts\Translation\Loader;
-use Webelightdev\LaravelMediaManager\ExternalMedia;
+use Webelightdev\LaravelMediaManager\MediaEntity;
 use Webelightdev\LaravelMediaManager\Controllers\ModelDeterminer;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileIsTooBig;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileDoesNotExist;
@@ -24,13 +24,13 @@ class MediaController extends Controller
     protected $model_type;
     protected $fileSystem;
     protected $media_types;
-    protected $externalMedia;
+    protected $mediaEntity;
     protected $modelDeterminer;
 
-    public function __construct(ModelDeterminer $modelDeterminer, Media $media, ExternalMedia $externalMedia)
+    public function __construct(ModelDeterminer $modelDeterminer, Media $media, MediaEntity $mediaEntity)
     {
         $this->media           = $media;
-        $this->externalMedia   = $externalMedia;
+        $this->mediaEntity     = $mediaEntity;
         $this->modelDeterminer = $modelDeterminer;
         $this->fileSystem      = config('mediaManager.storage');
         $this->mediaTypes      = config('mediaManager.media_types');
@@ -107,25 +107,24 @@ class MediaController extends Controller
         unlink('storage/'.$media->path.$media->media_name);
         return redirect()->back();
     }
-    public function getExternalMedia($mediaId, $externalId)    
-    {        
-        $sliders = $this->externalMedia->where('media_id', $mediaId)->where('external_id', $externalId)->get();        
-        return view('MediaManager::index', compact('medias'));    
+    
+    public function get($entityType, $entityId)
+    {
+        if (isset($entityType)) {
+            if ($entityType === "media" && isset($entityId)) {
+                $medias = $this->media->where('entity_type', $entityType)->where('entity_id', $entityId)->first();
+            } else {
+                $medias = $this->media->join('media_entities')->where('entity_type', $entityType)->where('entity_id', $entityId)->get();
+            }
+            $medias = $this->media->where('entity_type', $entityType)->get();     
+        } 
+        return view('MediaManager::index', compact('medias'));
     }
-    public function get($attribute, $value, $all = 'true')    
-    {        
-        if ($all == 'true') {            
-            $medias = $this->media->where($attribute, $value)->where('is_active', 1)->get();        
-        } else {            
-            $medias = $this->media->where($attribute, $value)->where('is_active', 1)->first();        
-        }        
-        return view('MediaManager::index', compact('medias'));   
-    }
-    public function externalMediaStore(Request $request)
+    public function MapEntity(Request $request)
     {
         DB::beginTransaction();
         try{
-          $this->externalMedia->create($request->all());
+          $this->mediaEntity->create($request->all());
           } catch (\Illuminate\Database\QueryException $e) {
             DB::rollback();
             return redirect('media')->with('error', $e->getMessage())->withInput();

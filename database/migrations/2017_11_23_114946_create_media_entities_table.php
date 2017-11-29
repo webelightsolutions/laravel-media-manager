@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExternalMediaTable extends Migration
+class CreateMediaEntitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateExternalMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('external_media', function (Blueprint $table) {
+        Schema::create('media_entities', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('external_id')->unsigned();
-            $table->integer('media_id')->unsigned();             
+            $table->timestamps();
+            $table->integer('entity_id')->index()->unsigned();
+            $table->integer('media_id')->index()->unsigned();
+            $table->string('entity_type');    
         });
     }
 
@@ -27,6 +29,6 @@ class CreateExternalMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('external_media');
+        Schema::dropIfExists('plugin_entities');
     }
 }
