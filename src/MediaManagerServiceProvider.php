@@ -2,6 +2,9 @@
 
 namespace Webelightdev\LaravelMediaManager;
 
+
+use Webelightdev\LaravelMediaManager\Controllers\MediaController;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class MediaManagerServiceProvider extends ServiceProvider
