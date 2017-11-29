@@ -94,8 +94,8 @@ class MediaController extends Controller
                  return redirect('media')->with('error', $e->getMessage())->withInput();
              }
              DB::commit();
-             if($request->returnType == 'object'){
-                return $mediaResonse;
+             if($request->returnType == 'json'){
+                return response()->json($mediaResonse);
             } else {
                 return redirect('media')->with('success', 'Media stored successfully.')->withInput();
             }
