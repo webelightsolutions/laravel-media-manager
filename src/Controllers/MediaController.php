@@ -95,13 +95,11 @@ class MediaController extends Controller
              }
              DB::commit();
              if($request->returnType == 'json'){
-
-                            return response()->json($mediaResonse);
-
-                        } else {
-
-                            return redirect('media')->with('success', 'Media stored successfully.')->withInput();
-                        }
+                return response()->json($mediaResonse);
+            } else {
+                return redirect('media')->with('success', 'Media stored successfully.')->withInput();
+            }
+        }
             
     }
     public function destroy($id)
