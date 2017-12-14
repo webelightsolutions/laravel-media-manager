@@ -12,6 +12,7 @@ use Webelightdev\LaravelMediaManager\Media;
 use Illuminate\Contracts\Translation\Loader;
 use Webelightdev\LaravelMediaManager\MediaEntity;
 use Webelightdev\LaravelMediaManager\Controllers\ModelDeterminer;
+use  Webelightdev\LaravelMediaManager\resource\leng\en\messages;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileIsTooBig;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\FileDoesNotExist;
 use Webelightdev\LaravelMediaManager\Exceptions\FileCannotBeAdded\MediaCannotBeDeleted;
@@ -39,16 +40,16 @@ class MediaController extends Controller
     }
     public function create()
     {
-        $directories= $this->storage->directories();
+        $directories= $this->storage->allDirectories();
         return view('MediaManager::media', compact('directories'));
     }
     public function makeDirectory(Request $request)
     {
         if ($this->storage->exists($request->folderName)) {
-            return redirect()->back()->with('error', 'sdfdsfsdf')->withInput();
+            return redirect()->back()->with('error', trans('messages.error_already_exists'))->withInput();
         } else {
             $this->storage->makeDirectory($request->folderName);
-            return redirect('media/create')->with('success', 'dsfsfsafsaf')->withInput();
+            return redirect('media/create')->with('success', trans('messages.new_folder'))->withInput();
         }
     }
     public function getAllMedia()

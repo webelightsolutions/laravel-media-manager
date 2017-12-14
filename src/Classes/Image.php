@@ -25,7 +25,12 @@ class Image {
             } 
         }
         $newImage->save();
-        $storage->put($path.$mediaName, $newImage);
-        return $mediaData = array('media_name' => $mediaName, 'mime_type'=> $mediaType, 'path'=> $path);
+        if(!($path === $media['directory'])){
+            $storage->put($media['directory'].'/'.$mediaName, $newImage);
+            return $mediaData = array('media_name' => $mediaName, 'mime_type'=> $mediaType, 'path'=> $media['directory'].'/');
+        } else {
+            $storage->put($path.$mediaName, $newImage);
+            return $mediaData = array('media_name' => $mediaName, 'mime_type'=> $mediaType, 'path'=> $path);
+        }
 	}
 }
